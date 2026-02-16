@@ -1,20 +1,25 @@
 import psycopg2
 from typing import List
 from app.domain.services import VectorRepository
-from app.config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
 
 
-class PgVectorRepository(VectorRepository):
+class PgVectorRepository:
 
-    def __init__(self):
-        self.conn = psycopg2.connect(
-            host=DB_HOST,
-            port=DB_PORT,
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD
+    def __init__(self, host, port, db_name, user, password):
+       self.host = host
+       self.port = port
+       self.db_name = db_name
+       self.user = user
+       self.password = password
+
+       self.conn = psycopg2.connect(
+               host=self.host,
+               port=self.port,
+               dbname=self.db_name,
+               user=self.user,
+               password=self.password
         )
-
+               
     # Infrastructure-specific helper
     def _to_pgvector(self, embedding: List[float]) -> str:
         return "[" + ",".join(str(x) for x in embedding) + "]"
@@ -38,12 +43,23 @@ class PgVectorRepository(VectorRepository):
         with self.conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT id, content
+                SELECT id, content, embedding <-> %s::vector AS score
                 FROM document_chunks
                 ORDER BY embedding <-> %s::vector
                 LIMIT %s
                 """,
-                (vector_str, k),
+                (vector_str, vector_str, k),
             )
-            return cur.fetchall()
+            rows = cur.fetchall()
+
+        return[        
+                {
+                    "id": row[0],
+                    "content": row[1],
+                    "score": row[2]
+                }
+                for row in rows
+        ]
+
+
 
