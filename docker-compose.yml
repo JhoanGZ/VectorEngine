@@ -10,5 +10,21 @@ services:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  api:
+    build: .
+    container_name: vectorengine_api
+    depends_on:
+      - db
+    environment: 
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: vectordb
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - "8000:8000"
 volumes:
   pgdata:
+
