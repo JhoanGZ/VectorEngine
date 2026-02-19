@@ -9,9 +9,10 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     
     OPENAI_API_KEY: str 
+    LLM_PROVIDER: str
+
     class Config:
         env_file = ".env"
-
 
 settings = Settings()
 
