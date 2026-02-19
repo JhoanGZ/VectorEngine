@@ -4,7 +4,7 @@ class RAGOrchestrator:
         self.repository = repository
         self.embedding_service = embedding_service
         self.llm = llm
-    
+
     def execute(
         self,
         query: str,
@@ -21,15 +21,11 @@ class RAGOrchestrator:
         if not results:
             context = "No relevant documents retrieved from knowledge base."
         else:
-            context = "\n\n".join(
-                [r["content"] for r in results if r.get("content")]
-            )
+            context = "\n\n".join([r["content"] for r in results if r.get("content")])
 
-        user_prompt = user_instruction_template.format(
-            context=context,
-            query=query,
-        )
-        
+        user_prompt = user_instruction_template.format(context=context, query=query)
+
+        # Provider capability -> it ignores unsupported structured output
         if response_format and not getattr(self.llm, "supports_response_format", False):
             response_format = None
 
@@ -39,4 +35,3 @@ class RAGOrchestrator:
             temperature=temperature,
             response_format=response_format,
         )
-

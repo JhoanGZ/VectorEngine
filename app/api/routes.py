@@ -1,5 +1,8 @@
 import logging
 from fastapi import APIRouter, Depends
+from app.api.schemas import FinancialRequest, FinancialResponse
+from app.api.dependencies import get_financial_engine
+from app.application.agents.financial_decision_engine import FinancialDecisionEngine
 from app.api.schemas import (
     DocumentRequest,
     QueryRequest,
@@ -57,4 +60,13 @@ def health():
             "service": "vectorengine"
             }
 
+@router.post("/financial/analyze", response_model=FinancialResponse)
+def analyze_financial(
+        request: FinancialRequest,
+        engine: FinancialDecisionEngine = Depends(get_financial_engine),
+):
+    logger.info("Financial analysis request received")
+    result = engine.analyze(request.document)
+    logger.info("Financial analysis completed")
+    return result
 

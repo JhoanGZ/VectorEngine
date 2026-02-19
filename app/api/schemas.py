@@ -16,3 +16,12 @@ class QueryResult(BaseModel):
 
 class QueryResponse(BaseModel):
     results: List[QueryResult]
+
+class FinancialRequest(BaseModel):
+    document: str
+
+class FinancialResponse(BaseModel):
+    risk_score: float
+    decision: str
+    key_risks: List[str]
+    summary: str
