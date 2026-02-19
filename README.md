@@ -30,7 +30,7 @@ The emphasis is architectural clarity, replaceability, and operational resilienc
 
 # Core Capabilities
 
-## 1️⃣ Dense Semantic Retrieval
+## 1️. Dense Semantic Retrieval
 
 - 384-dimensional embeddings (`all-MiniLM-L6-v2`)
 - Cosine similarity via PostgreSQL + pgvector
@@ -41,7 +41,7 @@ Retrieval logic is separated from storage and API layers.
 
 ---
 
-## 2️⃣ RAG Orchestration Layer
+## 2️. RAG Orchestration Layer
 
 The `RAGOrchestrator` executes:
 
@@ -67,7 +67,7 @@ If the primary provider fails, fallback is triggered automatically without break
 
 ---
 
-## 3️⃣ Financial Decision Engine
+## 3️. Financial Decision Engine
 
 A domain-level AI agent built on top of the RAG core.
 
@@ -90,7 +90,7 @@ Predictable AI behavior under contract enforcement.
 
 ---
 
-## 4️⃣ Stable Matching Engine (Phase 2)
+## 4️. Stable Matching Engine (Phase 2)
 
 VectorEngine includes a generic Gale–Shapley stable matching engine.
 
@@ -116,7 +116,7 @@ This demonstrates deterministic allocation logic independent of LLM inference.
 
 ---
 
-## 5️⃣ Streaming LLM Endpoint (Phase 2)
+## 5️. Streaming LLM Endpoint (Phase 2)
 
 ```
 GET /analysis/stream
@@ -131,7 +131,7 @@ Enables:
 
 ---
 
-## 6️⃣ Observability & Resilience
+## 6️. Observability & Resilience
 
 Every request includes:
 
